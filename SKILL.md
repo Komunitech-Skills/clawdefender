@@ -1,7 +1,7 @@
 ---
 name: clawdefender
 description: Security scanner and input sanitizer for AI agents. Detects prompt injection, command injection, SSRF, credential exfiltration, and path traversal attacks. Use when (1) installing new skills from ClawHub, (2) processing external input like emails, calendar events, Trello cards, or API responses, (3) validating URLs before fetching, (4) running security audits on your workspace. Protects agents from malicious content in untrusted data sources.
-version: 1.0.3
+version: 1.0.4
 metadata:
   openclaw:
     emoji: "🛡️"
@@ -16,7 +16,7 @@ triggers:
   - "check for malware"
 author: Rin (based on Anthropic Agent Skills pattern)
 license: UNLICENSED
-lastUpdated: 2026-06-18
+lastUpdated: 2026-07-17
 ---
 
 # ClawDefender
@@ -40,7 +40,7 @@ echo "some text" | ./scripts/clawdefender.sh --check-prompt           # check fo
 | `sanitize.sh [--json/--strict/--report/--silent]` | wrap any text, flag injection |
 | `--check-url <url>` | block SSRF / exfil endpoints |
 | `--check-prompt` | flag injection in piped text |
-| `--install <skill>` | install via clawhub + scan |
+| `--install <skill>` | install via clawhub + scan (**scan-first, safe default**: it removes the installed path *only if* the skill fails the security scan — a clean skill is never touched) |
 | `--validate <text>` | check text for all threat patterns |
 
 → Full command docs, examples & automation (cron / HEARTBEAT / CI-CD): [`references/commands.md`](references/commands.md)
