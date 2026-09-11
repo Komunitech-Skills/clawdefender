@@ -1,18 +1,35 @@
-# 🛡️ clawdefender
+# clawdefender
 
-> 🔒 **Diaudit & aman** — lolos skill-gate 100/100 · berjalan **lokal-saja**: tanpa panggilan jaringan, tanpa `eval`/kode ter-obfuscate. Semua kode terbuka & bisa kamu verifikasi sendiri. _(Audit keamanan: 2026-07-17)_
+Explicit text/JSON input scanning with fail-closed strict mode. URL checks are preflight checks; the HTTP client must revalidate redirects and connected addresses. Pattern scanning is not a sandbox.
 
-Security scanner and input sanitizer for AI agents. Detects prompt injection, command injection, SSRF, credential exfiltration, and path traversal attacks. Use when (1) installing new skills from ClawHub, (2) processing external input like emails, calendar events, Trello cards, or API responses, (3) validating URLs before fetching, (4) running security audits on your workspace. Protects agents from malicious content in untrusted data sources.
+## Compatibility
 
-**Version:** 1.0.2 · **Triggers:** security scan, prompt injection, input sanitizer, skill audit, validate URL, check for malware
+Validated against OpenClaw 2026.9.3. Linux, Bash, Git and Python 3.11+ are required for the operational lifecycle. JavaScript components require Node 22.13+; the runtime SDK tests use Node 24. Revalidate SDK contracts before upgrading OpenClaw.
 
-## Usage
-Full guide and procedure: see **SKILL.md**. Bundled scripts (if any) live in **scripts/**; deep reference material in **references/** (loaded on demand).
+## Install and verify
 
-## Install
-    openclaw skills install git:rin-proxy/clawdefender
+Select an existing workspace explicitly; do not point a test at production. Review and check out the intended full commit before running its installer.
 
-Or copy this folder into your OpenClaw workspace/skills/ directory.
+```bash
+WS=/absolute/agent/workspace
+bash scripts/install.sh --workspace "$WS"
+bash scripts/status.sh --workspace "$WS"
+printf '{"text":"ordinary fixture"}\n' | bash scripts/sanitize.sh --strict
+bash scripts/clawdefender.sh --check-url https://example.com
+```
 
----
-*README for the clawdefender skill. The authoritative contract is SKILL.md.*
+## Update, rollback and remove
+
+```bash
+bash scripts/update.sh --workspace "$WS" --repo https://github.com/rin-proxy/clawdefender.git --ref FULL_40_CHARACTER_COMMIT
+bash scripts/rollback.sh --workspace "$WS"
+bash scripts/uninstall.sh --workspace "$WS"
+```
+
+Install/reinstall is idempotent. Updates refuse unreviewed code drift; `--force` is an explicit override after review. Rollback refuses conflicting owner edits to `AGENTS.md`. Uninstall archives owned code outside discovery and preserves owner memory/configuration. `--keep-code` only removes the instruction pointer, so the skill remains discoverable. Installation status always separates code presence from runtime verification.
+
+## Validation
+
+Run the repository tests against synthetic fixtures; inspect commands before using live credentials. Python tests: `python3 -m unittest discover -s tests -p "test_*.py"` where present. JavaScript tests are in `test/`, `tests/`, or `_semantic-stack/test-*.mjs`. Include install → reinstall → pinned update → rollback → uninstall, owner-data preservation, failure paths and a real OpenClaw integration test. No service or scheduler is enabled by the common skill installer.
+
+The detailed agent procedure remains in `SKILL.md` where present. The compatibility and lifecycle instructions in this README describe the current implementation.
