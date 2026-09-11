@@ -13,7 +13,7 @@
 #   clawdefender --whitelist <action>       Manage whitelist
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-WORKSPACE="/home/clawdbot/clawd"
+WORKSPACE="${OPENCLAW_WORKSPACE:-$HOME/.openclaw/workspace}"
 SKILLS_DIR="$WORKSPACE/skills"
 SECURITY_DIR="$WORKSPACE/security"
 LOG_FILE="$WORKSPACE/memory/security-scans.md"
@@ -645,29 +645,22 @@ case "$1" in
     --check-prompt)
         input=$(cat)
         validate_input "$input" "${2:-false}"
+        exit $?
         ;;
     --check-command)
         [ -z "$2" ] && { echo "Usage: $0 --check-command <command>"; exit 1; }
         validate_input "$2" "${3:-false}"
         ;;
     --check-url)
-        [ -z "$2" ] && { echo "Usage: $0 --check-url <url>"; exit 1; }
-        findings=$(validate_url "$2")
-        if [ -z "$findings" ]; then
-            echo -e "${GREEN}✅ URL is safe${NC}"
-        else
-            echo -e "${RED}🔴 SSRF/dangerous URL detected${NC}"
-            echo "$findings"
-            exit 1
-        fi
+        exec python3 "$SCRIPT_DIR/url_policy.py" "${2:-}"
         ;;
     --validate)
         [ -z "$2" ] && { echo "Usage: $0 --validate <input>"; exit 1; }
         validate_input "$2" "${3:-false}"
         ;;
     --install)
-        [ -z "$2" ] && { echo "Usage: $0 --install <skill-name>"; exit 1; }
-        safe_install "$2"
+        echo "Install-time scanning is not an execution sandbox. Fetch a reviewed pinned checkout, scan it, then use OpenClaw installation explicitly." >&2
+        exit 2
         ;;
     --whitelist)
         case "$2" in
@@ -678,7 +671,7 @@ case "$1" in
                 [ -z "$3" ] && { echo "Usage: $0 --whitelist add <pattern> [reason]"; exit 1; }
                 echo "Adding $3 to whitelist..."
                 # TODO: Implement JSON update
-                echo "Not yet implemented"
+                echo "Unsupported whitelist mutation" >&2; exit 2
                 ;;
             *)
                 echo "Usage: $0 --whitelist [list|add|remove]"

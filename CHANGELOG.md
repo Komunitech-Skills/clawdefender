@@ -1,4 +1,12 @@
-# Changelog — clawdefender
+# Changelog
+
+## 2026-09-11 integration remediation
+
+Explicit text/JSON input scanning with fail-closed strict mode. URL checks are preflight checks; the HTTP client must revalidate redirects and connected addresses. Pattern scanning is not a sandbox.
+
+Explicit workspace selection, reversible lifecycle and regression coverage; install status does not imply runtime readiness.
+
+— clawdefender
 
 ## 1.0.4 (2026-07-17)
 - docs: document --install as scan-first/safe-default (removes an installed path only if the skill fails the scan; a clean skill is never touched).
