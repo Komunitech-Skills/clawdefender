@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-14 — Audit acceptance
+
+- Document private-repository access, explicit prerequisites, functional expectations and recovery limits.
+- Add one offline test entrypoint and CI; distinguish runtime/behavior evidence from installation status.
+
+
 ## 2026-09-11 integration remediation
 
 Explicit text/JSON input scanning with fail-closed strict mode. URL checks are preflight checks; the HTTP client must revalidate redirects and connected addresses. Pattern scanning is not a sandbox.
