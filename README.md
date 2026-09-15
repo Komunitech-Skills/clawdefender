@@ -1,6 +1,50 @@
 # clawdefender
 
-Explicit text/JSON input scanning with fail-closed strict mode. URL checks are preflight checks; the HTTP client must revalidate redirects and connected addresses. Pattern scanning is not a sandbox.
+Preflight untrusted text, JSON and URLs with heuristic checks. Strict sanitization withholds content when scanning fails or detects a threat.
+
+Navigation: [When to use it](#when-to-use-it) · [See the expected result](#see-the-expected-result) · [Quick start on synthetic data](#quick-start-on-synthetic-data) · [Using it from OpenClaw](#using-it-from-openclaw) · [Input, output and completion](#input-output-and-completion) · [Commands and configuration](#commands-and-configuration) · [Data and effects](#data-and-effects) · [Get the private repository](#get-the-private-repository) · [Compatibility](#compatibility) · [Install and verify](#install-and-verify) · [Update, rollback and remove](#update-rollback-and-remove) · [Validation](#validation) · [Shared installer source](#shared-installer-source) · [Troubleshooting](#troubleshooting) · [Related products and further reading](#related-products-and-further-reading)
+
+## When to use it
+
+Before consuming external content, or when validating a URL before a fetch. Use security-analysis for workspace posture.
+
+## See the expected result
+
+Example request: **“Scan this synthetic input in strict mode and report whether it can be returned.”**
+
+Expected behavior: Clean text content is returned with a trailing output newline (an existing newline is retained too). Flagged input or malformed/scanner-unavailable input is withheld with nonzero status. This is an illustrative acceptance scenario, not a captured production conversation.
+
+## Quick start on synthetic data
+
+After obtaining a reviewed checkout using [private access](#get-the-private-repository), run:
+
+```bash
+bash examples/quickstart.sh
+```
+
+The script creates a private temporary workspace, prints its artifact directory and checks the result. Read [the example](examples/quickstart.sh) before running it. It keeps the synthetic artifacts for inspection; remove only the printed example directory when finished. It does not target your existing workspace or enable production services.
+
+**What this example proves:** The real local helper runs on synthetic data and checks the documented result. This is not an assessment of production data or model answer quality.
+
+Success ends with `Quickstart passed: clawdefender`; an unexpected result exits nonzero. Some examples deliberately provoke a failure and verify it is rejected. Run installation and the relevant functional probe below for your own selected instance.
+
+## Using it from OpenClaw
+
+The installer places this package under `skills/clawdefender` in the explicit workspace and adds its managed instruction pointer. Ask the agent in that workspace to read the matching SKILL.md and follow it. The chat example is natural language, not a promise of a registered slash command.
+
+## Input, output and completion
+
+Input: stdin for sanitizer or an explicit URL for preflight. Sanitizer exits 0 clean, 1 detected, 2 malformed/unavailable. URL policy covers allowed scheme/address forms; the transport still must enforce redirects and peer checks.
+
+Typical workflow: select the intended input/workspace → inspect prerequisites → run the matching operation → inspect its real result and artifact → report success, missing evidence or failure. Clean text content is returned with a trailing output newline (an existing newline is retained too). Flagged input or malformed/scanner-unavailable input is withheld with nonzero status.
+
+## Commands and configuration
+
+`bash scripts/sanitize.sh --strict`; `bash scripts/clawdefender.sh --check-prompt`; `python3 scripts/url_policy.py URL`. The old `--install` action is deliberately unavailable.
+
+## Data and effects
+
+Text inspection is local. URL preflight can resolve DNS but does not fetch a page. No runtime sandbox or comprehensive prompt-injection prevention is established by a pass. Keep credentials out of example commands and reports. Use synthetic data for verification; preserve owner data during code maintenance.
 
 ## Get the private repository
 
@@ -21,7 +65,7 @@ The placeholder must be replaced before execution. Do not paste tokens into clon
 
 ## Compatibility
 
-Validated against OpenClaw 2026.9.3. Linux, Bash, Git and Python 3.11+ are required for the operational lifecycle. JavaScript components require Node 22.13+; the runtime SDK tests use Node 24. Revalidate SDK contracts before upgrading OpenClaw.
+Release evidence covers OpenClaw 2026.9.3. Bash, Python 3.11+, Git for lifecycle; standard Unix utilities. Revalidate changed SDK/native contracts before using another OpenClaw version.
 
 ## Install and verify
 
@@ -66,3 +110,15 @@ the change. The transfer requires the suite's recorded code to be unchanged. Sui
 rollback/uninstall will then preserve that standalone component. To return to suite
 ownership, uninstall the standalone package (data remains preserved), then explicitly
 install the selected suite component. Ordinary update/rollback commands remain available.
+
+## Troubleshooting
+
+Strict mode returned nothing → inspect exit/stderr before using content. URL rejected → check scheme, userinfo and private addresses. Do not bypass checks by executing an unreviewed installer.
+
+Private clone returns 404 → check the authenticated account and repository read permission on this machine → repeat checkout. Installation rejected → inspect the reported workspace/ownership/drift conflict → resolve that exact cause and rerun status. A successful install receipt alone is not functional evidence; repeat the acceptance probe after recovery.
+
+## Related products and further reading
+
+[security-analysis](https://github.com/rin-proxy/security-analysis) · [code-reviewer](https://github.com/rin-proxy/code-reviewer). The [runbook catalog](https://github.com/rin-proxy/rin-runbook/blob/main/CATALOG.md) identifies active sources and presets. skill-curator is archived; new skill-management installs use skill-forge.
+
+[Skill instructions](SKILL.md) · [Acceptance and recovery](VERIFICATION.md) · [Changelog](CHANGELOG.md) · [Commercial license](LICENSE-COMMERCIAL.md). Follow the repository's actual license/metadata and owner-granted access; this guide introduces no new license or redistribution grant. Detailed agent procedures stay in their existing reference files so discovery instructions remain concise.
