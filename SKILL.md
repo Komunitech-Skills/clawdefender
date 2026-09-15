@@ -1,7 +1,7 @@
 ---
 name: clawdefender
 description: Heuristic input and URL preflight checks for OpenClaw; strict sanitizer blocks unexamined input.
-version: 1.0.5
+version: 1.0.6
 metadata:
   openclaw:
     emoji: "🛡️"
@@ -16,7 +16,7 @@ triggers:
   - "check for malware"
 author: Rin (based on Anthropic Agent Skills pattern)
 license: UNLICENSED
-lastUpdated: 2026-09-14
+lastUpdated: 2026-09-15
 ---
 
 # ClawDefender

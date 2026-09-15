@@ -26,3 +26,9 @@ Explicit workspace selection, reversible lifecycle and regression coverage; inst
 ## 1.0.2 (2026-06-15)
 - Packaging pass: README added, frontmatter standardized (license / lastUpdated), structure/PDA hygiene.
 - Baseline entry — track future changes here going forward. The authoritative contract is SKILL.md.
+
+## 2026-09-15 — shared lifecycle
+
+- Pin generated lifecycle code to its canonical source and verify distributed hashes.
+- Guard suite-to-standalone ownership transfers and release receipts on uninstall.
+- Preserve existing command contracts and owner data.
