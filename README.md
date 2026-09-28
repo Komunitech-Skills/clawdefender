@@ -5,7 +5,7 @@ when scanning fails or detects a threat.
 
 ## Use and expected result
 
-Before consuming external content, or when validating a URL before a fetch. Use security-analysis
+Before consuming external content, or when validating a URL before a fetch. Use workspace-security
 for workspace posture.
 
 Example request: **“Scan this synthetic input in strict mode and report whether it can be
@@ -15,9 +15,8 @@ Expected behavior: Clean text content is returned with a trailing output newline
 newline is retained too). Flagged input or malformed/scanner-unavailable input is withheld with
 nonzero status.
 
-The installer places this package under `skills/clawdefender` in the explicit workspace and adds its
-managed instruction pointer. Ask the agent in that workspace to read the matching SKILL.md and
-follow it. The chat example is natural language, not a promise of a registered slash command.
+The installer places this package in the explicit workspace. Current OpenClaw discovers its
+`SKILL.md` directly and leaves `AGENTS.md` owner-controlled. The chat example is natural language, not a promise of a registered slash command.
 
 ## Quick start
 
@@ -74,7 +73,7 @@ sandbox or comprehensive prompt-injection prevention is established by a pass. K
 of example commands and reports. Use synthetic data for verification; preserve owner data during
 code maintenance.
 
-Release evidence covers OpenClaw 2026.9.3. Bash, Python 3.11+, Git for lifecycle; standard Unix
+Release evidence covers OpenClaw 2026.9.6. Bash, Python 3.11+, Git for lifecycle; standard Unix
 utilities. Revalidate changed SDK/native contracts before using another OpenClaw version.
 
 Recovery hint: Strict mode returned nothing → inspect exit/stderr before using content. URL rejected
