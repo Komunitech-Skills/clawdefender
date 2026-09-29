@@ -1,3 +1,7 @@
+# v2.0.0 — activation model
+
+Adds a fail-closed passive OpenClaw preflight plugin while retaining the explicit local CLI. Schedules remain disabled by default, and this release does not deploy or reconfigure Rin.
+
 # v1.1.0 — portfolio contract
 
 Align skill discovery and helper paths with current OpenClaw. Use the shared lifecycle without default `AGENTS.md` injection. No change is deployed directly to Rin.
