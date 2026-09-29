@@ -1,5 +1,11 @@
 # clawdefender
 
+> **Product classification:** Plugin · Activation: Passive + Manual · Model discovery: Explicit only
+
+## Activation model
+
+The OpenClaw plugin passively scans the prompt before an agent run and fails closed on scanner errors. The CLI remains available for explicit scans. Installing only the skill does not activate the plugin.
+
 Preflight untrusted text, JSON and URLs with heuristic checks. Strict sanitization withholds content
 when scanning fails or detects a threat.
 
@@ -51,6 +57,22 @@ printf '{"text":"ordinary fixture"}\n' | bash scripts/sanitize.sh --strict
 bash scripts/clawdefender.sh --check-url https://example.com
 ```
 
+The commands above install the explicit CLI skill. To enable passive preflight, register the reviewed
+checkout as an OpenClaw plugin and restart only the selected Gateway:
+
+```bash
+openclaw plugins install "$PWD" --force --accept-capabilities
+openclaw config set plugins.entries.clawdefender.hooks.allowConversationAccess true
+openclaw plugins inspect clawdefender
+```
+
+The plugin uses `before_agent_run`, scans the assembled prompt locally, and withholds it when the
+scanner detects a threat, fails, times out, or exceeds `maxChars`. `blockedMessage` controls the
+replacement message. The conversation-access setting is required because this hook must inspect the
+assembled prompt; restart the selected Gateway after changing it. Keep the defaults unless the
+selected agent has a reviewed reason to change them. A scanner pass is heuristic evidence, not a
+security boundary.
+
 For a reviewed pinned update or recovery:
 
 ```bash
@@ -84,6 +106,7 @@ installer.
 
 ```bash
 bash test.sh
+node tests/runtime.mjs
 python3 scripts/check-docs.py
 ```
 

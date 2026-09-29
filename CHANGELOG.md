@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0 - 2026-09-29
+
+- Add a fail-closed passive `before_agent_run` OpenClaw plugin while retaining the explicit CLI.
+- Declare plugin/manual activation and keep the skill hidden from automatic model invocation.
+
 ## 1.1.0 — 2026-09-28
 
 - Align skill discovery and helper paths with current OpenClaw.

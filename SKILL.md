@@ -1,7 +1,7 @@
 ---
 name: clawdefender
 description: Preflight untrusted text, JSON, prompts, and URLs. Use before consuming external input; use workspace-security for stored code.
-version: 1.1.0
+version: 2.0.0
 metadata:
   openclaw:
     emoji: 🛡️
@@ -12,6 +12,8 @@ metadata:
       - grep
       - find
 license: UNLICENSED
+user-invocable: true
+disable-model-invocation: true
 ---
 
 # ClawDefender

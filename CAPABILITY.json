@@ -1,0 +1,20 @@
+{
+  "schema": "rin.capability/v1",
+  "name": "clawdefender",
+  "kind": "plugin",
+  "interfaces": [
+    "openclaw-plugin",
+    "manual-cli"
+  ],
+  "activation": [
+    "passive",
+    "manual"
+  ],
+  "discovery": "explicit",
+  "audience": [
+    "general",
+    "security"
+  ],
+  "sideEffects": "read-only",
+  "status": "active"
+}
